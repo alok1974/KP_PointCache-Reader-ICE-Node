@@ -1,3 +1,35 @@
+//#########################################################################################
+//#########################################################################################
+//                                                                                       ##
+//  KP_PointCache-Reader-ICE-Node V 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com) ##
+//                                                                                       ##
+//                                                                                       ##
+//  This file is part of KP_PointCache-Reader-ICE-Node.                                  ##
+//                                                                                       ##
+//  KP_PointCache-Reader-ICE-Node is free software: you can redistribute it and/or modify##
+//  it under the terms of the GNU General Public License, Version 3, 29 June 2007        ##
+//  as published by the Free Software Foundation,                                        ##
+//                                                                                       ##
+//  KP_PointCache-Reader-ICE-Node is distributed in the hope that it will be useful,     ##
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of                       ##
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        ##
+//  GNU General Public License for more details.                                         ##
+//                                                                                       ##
+//  You should have received a copy of the GNU General Public License                    ##
+//  along with KP_PointCache-Reader-ICE-Node.  If not, see <http://www.gnu.org/licenses/>##
+//	                                                                                     ##
+//	The original Code for KP_PointCache Core is written by Kai Wolter. This work is just ##
+//	an extension / reuse of his code as is.                                              ##
+//	                                                                                     ##
+//	Kai Wolter's original Licence can be found in the other files of this code as        ##
+//	and when                                                                             ##
+//	needed.                                                                              ##
+//                                                                                       ##
+//                                                                                       ##
+//#########################################################################################
+//#########################################################################################
+
+
 #ifndef _HelperFunctions_
 #define _HelperFunctions_
 

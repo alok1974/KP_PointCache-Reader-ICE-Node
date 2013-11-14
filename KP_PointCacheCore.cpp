@@ -448,11 +448,18 @@ int PointCacheCore::AddressData(int frame, int points)
 		header = 32;
 
 	int bytesPerVertex = 12;
+
+	// casting to __int64 for files more than 2gb on win64
+	__int64 header_ =  static_cast<__int64>(header);
+	__int64 bytesPerVertex_ =  static_cast<__int64>(bytesPerVertex);
+	__int64 points_ =  static_cast<__int64>(points);
+	__int64 frame_ =  static_cast<__int64>(frame);
+	__int64 fp =  static_cast<__int64>(header_ + (frame_ * points_ * bytesPerVertex_));
 	
 	if ( buffer )
 		this->bufferAddress = ((frame * points * bytesPerVertex));
 	else
-		infile.seekg( (header + (frame * points * bytesPerVertex)) );
+		infile.seekg(fp);
 	return 1;
 }
 

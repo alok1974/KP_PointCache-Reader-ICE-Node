@@ -50,6 +50,8 @@ enum IDs
 	ID_IN_UseYup = 9,
 	ID_G_100 = 100,
 	ID_OUT_Points = 200,
+	ID_OUT_StartFrame = 201,
+	ID_OUT_EndFrame = 202,
 	ID_TYPE_CNS = 400,
 	ID_STRUCT_CNS,
 	ID_CTXT_CNS,
@@ -64,7 +66,7 @@ SICALLBACK XSILoadPlugin( PluginRegistrar& in_reg )
 {
 	in_reg.PutAuthor(L"Alok Gandhi");
 	in_reg.PutName(L"ReadPC2");
-	in_reg.PutVersion(1,0);
+	in_reg.PutVersion(1,1);
 
 	RegisterReadPC2( in_reg );
 
@@ -259,12 +261,35 @@ CStatus RegisterReadPC2( PluginRegistrar& in_reg )
 								ID_CTXT_CNS);
 	st.AssertSucceeded( ) ;
 
+	// Output Ports
 	st = nodeDef.AddOutputPort(	ID_OUT_Points,
 								siICENodeDataVector3,
 								siICENodeStructureArray,
 								siICENodeContextAny,
 								L"Points",
 								L"Points",
+								ID_UNDEF,
+								ID_UNDEF,
+								ID_CTXT_CNS);
+	st.AssertSucceeded( ) ;
+
+	st = nodeDef.AddOutputPort(	ID_OUT_StartFrame,
+								siICENodeDataFloat,
+								siICENodeStructureSingle,
+								siICENodeContextAny,
+								L"StartFrame",
+								L"StartFrame",
+								ID_UNDEF,
+								ID_UNDEF,
+								ID_CTXT_CNS);
+	st.AssertSucceeded( ) ;
+
+	st = nodeDef.AddOutputPort(	ID_OUT_EndFrame,
+								siICENodeDataFloat,
+								siICENodeStructureSingle,
+								siICENodeContextAny,
+								L"EndFrame",
+								L"EndFrame",
 								ID_UNDEF,
 								ID_UNDEF,
 								ID_CTXT_CNS);
@@ -282,7 +307,7 @@ SICALLBACK ReadPC2_Init( CRef& in_ref )
 {
 	Context ctxt = in_ref;
 
-	PointCacheCore * pCacheCore = new PointCacheCore();
+	PointCacheCore* pCacheCore = new PointCacheCore();
 	ctxt.PutUserData( (CValue::siPtrType)pCacheCore );
 	
 	return CStatus::OK;
@@ -375,6 +400,11 @@ SICALLBACK ReadPC2_Evaluate( ICENodeContext& ctxt )
 
 	
 	int numDataPoints;
+	double startFrame;
+	double endFrame;
+	double samples;
+	int nbSamples;
+
 	double currentFrame = ctxt.GetTime().GetTime();
 	CVector3Array posArray(0);
 
@@ -392,7 +422,13 @@ SICALLBACK ReadPC2_Evaluate( ICENodeContext& ctxt )
 		pCacheCore->GetNumPoints(numDataPoints);
 		posArray.Resize((LONG)numDataPoints);
 
-		if ( customPlayback )
+		pCacheCore->GetStartTime(startFrame);
+		pCacheCore->GetSampleRate(samples);
+		pCacheCore->GetNumSamples(nbSamples);
+
+		endFrame = startFrame + (((double) nbSamples - 1) / samples);
+
+		if( customPlayback )
 		  currentFrame = customFrame;
 		CalculatePosArray(pCacheCore, currentFrame, timeWarp, offset, posArray, useYUp, interpolation, hermiteTension, hermiteBias);
 		if ( loadOption == 1 )
@@ -427,6 +463,36 @@ SICALLBACK ReadPC2_Evaluate( ICENodeContext& ctxt )
 			
 			}
 		}
+		break;
+
+		case ID_OUT_StartFrame :
+		{
+
+			if(posArray.GetCount() == 0)
+			{
+				return CStatus::OK;
+			}
+
+	
+			CDataArrayFloat outData(ctxt);
+			outData[0] = (float) startFrame;
+		}
+
+		break;
+
+
+		case ID_OUT_EndFrame :
+		{
+
+			if(posArray.GetCount() == 0)
+			{
+				return CStatus::OK;
+			}
+
+			CDataArrayFloat outData(ctxt);
+			outData[0] = (float) endFrame;
+		}
+
 		break;
 
 	};

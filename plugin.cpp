@@ -341,7 +341,7 @@ SICALLBACK ReadPC2_Evaluate( ICENodeContext& ctxt )
 
 	if(strFilepath.Length() == 0)
 	{
-		Application().LogMessage(CString("No Cache File specified"), siWarningMsg);
+		//Application().LogMessage(CString("No Cache File specified"), siWarningMsg);
 		return CStatus::OK;
 	}
 
@@ -400,7 +400,7 @@ SICALLBACK ReadPC2_Evaluate( ICENodeContext& ctxt )
 	}
 	else
 	{
-		Application().LogMessage(CString("Unable to open Cache File <") + strFilepath + ">", siWarningMsg);
+		//Application().LogMessage(CString("Unable to open Cache File <") + strFilepath + ">", siWarningMsg);
 		return CStatus::OK;
 	}
 
